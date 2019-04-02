@@ -60,5 +60,18 @@ export default class GameScene extends Phaser.Scene {
 
     // Collision Detection
     this.physics.add.collider(troll, platforms);
+
+    var password = game.add.inputField(10, 90, {
+      font: "18px Arial",
+      fill: "#212121",
+      fontWeight: "bold",
+      width: 150,
+      padding: 8,
+      borderWidth: 1,
+      borderColor: "#000",
+      borderRadius: 6,
+      placeHolder: "Password",
+      type: PhaserInput.InputType.password
+    });
   }
 }
