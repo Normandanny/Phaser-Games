@@ -2,8 +2,40 @@
 <html>
   <head>
     <link rel="stylesheet" type="text/css" href="css/style.css" />
+    <script src="src/Extra/CanvasInput.min.js" charset="utf-8"></script>
   </head>
   <body>
-    <script src="build/project.bundle.js" charset="utf-8"></script>
+    <!-- <script src="build/project.bundle.js" charset="utf-8"></script> -->
+    <div id="game"></div>
+    <div id="main" style="display: none">
+      <div id="search">
+        <span class="input input--hoshi">
+          <input
+            class="input__field input__field--hoshi"
+            type="text"
+            id="input-4"
+          />
+          <label
+            class="input__label input__label--hoshi input__label--hoshi-color-0"
+            for="input-4"
+          >
+            <span
+              class="input__label-content input__label-content--hoshi txt-rotate"
+              data-period="2000"
+              data-rotate='["Good", "Fantastic", "Great", "Wonderful", "Awesome"]'
+            ></span>
+          </label>
+        </span>
+      </div>
+      <div class="button">
+        <button id="button-next" type="button" class="button button--next">
+          Okay
+        </button>
+      </div>
+    </div>
+
+    <script src="src/Extra/classie.js"></script>
+    <script src="src/Extra/text-rotate.js"></script>
+    <script src="src/Extra/helper.js"></script>
   </body>
 </html>

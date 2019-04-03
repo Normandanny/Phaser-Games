@@ -14,7 +14,7 @@ export default class CreditsScene extends Phaser.Scene {
     this.madeByText = this.add.text(
       0,
       0,
-      "Coding & Graphics: Heng Tang\n\nMusic: patrickdearteaga.com",
+      "Coding: Heng Tang\n\nMusic: patrickdearteaga.com",
       {
         fontSize: "26px",
         fill: "#fff"
