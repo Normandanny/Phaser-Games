@@ -9,6 +9,7 @@ var healthbar;
 var cursors;
 var description;
 var trolls;
+var player;
 var randomMovement;
 
 var timeSinceLastMovement = 0;
@@ -22,16 +23,28 @@ export default class GameScene extends Phaser.Scene {
 
   preload() {
     // load images
-    for (var i = 1; i <= 11; i++) {
-      this.load.image(
-        `bg-${i}`,
-        `../../assets/pictures/background/Layer (${i}).png`
-      );
-    }
+    // for (var i = 1; i <= 11; i++) {
+    //   this.load.image(
+    //     `bg-${i}`,
+    //     `../../assets/pictures/background/Layer (${i}).png`
+    //   );
+    // }
     this.load.image("bg", "../../assets/pictures/background/Scene.png");
+    this.load.image(
+      "platform",
+      "../../assets/pictures/background/Platform.png"
+    );
 
     // Load the character & troll
-    this.load.image("player", "../../assets/pictures/characters/player.png");
+    // this.load.image("player", "../../assets/pictures/characters/player.png");
+    this.load.spritesheet(
+      "player",
+      "../../assets/pictures/characters/playerIdle.png",
+      {
+        frameWidth: 840,
+        frameHeight: 624
+      }
+    );
     this.load.spritesheet(
       "troll",
       "../../assets/pictures/trolls/trollIdle.png",
@@ -59,12 +72,19 @@ export default class GameScene extends Phaser.Scene {
 
     // Load ground
     platforms = this.physics.add.staticGroup();
-    platforms.create(config.width / 2, config.height / 2, "bg-1").refreshBody();
+    platforms
+      .create(config.width / 2, config.height - 98, "platform")
+      .refreshBody().alpha = 0;
+
+    // The player
+    player = this.physics.add.sprite(340, 200, "player").setScale(0.6);
+    player.setBounce(0.2);
+    player.setCollideWorldBounds(true);
 
     // The troll
-    troll = this.physics.add.sprite(200, 200, "troll");
+    troll = this.physics.add.sprite(800, 200, "troll").setScale(1.5);
 
-    //  Player physics properties.
+    //  Troll physics properties.
     troll.setBounce(0.2);
     troll.setCollideWorldBounds(true);
 
@@ -75,6 +95,12 @@ export default class GameScene extends Phaser.Scene {
     //   frameRate: 10,
     //   repeat: -1
     // });
+    this.anims.create({
+      key: "playerIdle",
+      frames: this.anims.generateFrameNumbers("player", { start: 0, end: 9 }),
+      frameRate: 10,
+      repeat: -1
+    });
 
     this.anims.create({
       key: "left",
@@ -98,11 +124,12 @@ export default class GameScene extends Phaser.Scene {
 
     // Collision Detection
     this.physics.add.collider(troll, platforms);
+    this.physics.add.collider(player, platforms);
 
     // HUD
     // var barConfig = { x: 200, y: 100 };
     // this.myHealthBar = new HealthBar(this.game, barConfig);
-    healthbar = this.add.image(180, 540, "health-01");
+    // healthbar = this.add.image(180, 540, "health-01");
 
     // Text
     description = this.add.text(
@@ -118,40 +145,40 @@ export default class GameScene extends Phaser.Scene {
     cursors = this.input.keyboard.createCursorKeys();
 
     // Display text field
-    VisibilityToggle("main");
+    // VisibilityToggle("main");
 
     // Add event listeners
-    document
-      .getElementById("button-next")
-      .addEventListener("click", function() {
-        console.log(troll);
-        if (document.getElementById("input-4").value === "") {
-          textField.classList.add("input__label--error");
-          setTimeout(function() {
-            textField.classList.remove("input__label--error");
-          }, 300);
-        } else {
-          if (positivityCheck(document.getElementById("input-4").value)) {
-            if (healthbar.texture.key == "health-01") {
-              healthbar.setTexture("health-02");
-            } else if (healthbar.texture.key == "health-02") {
-              healthbar.setTexture("health-03");
-            } else if (healthbar.texture.key == "health-03") {
-              healthbar.setTexture("health-04");
-            } else if (healthbar.texture.key == "health-04") {
-              healthbar.setTexture("health-05");
-            }
-            document.getElementById("input-4").value = "";
-          } else {
-          }
-        }
-      });
+    // document
+    //   .getElementById("button-next")
+    //   .addEventListener("click", function() {
+    //     console.log(troll);
+    //     if (document.getElementById("input-4").value === "") {
+    //       textField.classList.add("input__label--error");
+    //       setTimeout(function() {
+    //         textField.classList.remove("input__label--error");
+    //       }, 300);
+    //     } else {
+    //       if (positivityCheck(document.getElementById("input-4").value)) {
+    //         if (healthbar.texture.key == "health-01") {
+    //           healthbar.setTexture("health-02");
+    //         } else if (healthbar.texture.key == "health-02") {
+    //           healthbar.setTexture("health-03");
+    //         } else if (healthbar.texture.key == "health-03") {
+    //           healthbar.setTexture("health-04");
+    //         } else if (healthbar.texture.key == "health-04") {
+    //           healthbar.setTexture("health-05");
+    //         }
+    //         document.getElementById("input-4").value = "";
+    //       } else {
+    //       }
+    //     }
+    //   });
   }
 
   update() {
     // Update the variable that tracks total time elapsed
     // timeSinceLastMovement += this.time.now;
-    console.log();
+    player.anims.play("playerIdle", true);
 
     if (this.time.now >= timeSinceLastMovement) {
       // eg, update every 10 seconds
@@ -178,9 +205,9 @@ export default class GameScene extends Phaser.Scene {
       randomMovement = -randomMovement;
     }
 
-    if (healthbar.texture.key == "health-05") {
-      location.reload();
-    }
+    // if (healthbar.texture.key == "health-05") {
+    //   location.reload();
+    // }
     // if (cursors.left.isDown) {
     //   troll.setVelocityX(-240);
 
