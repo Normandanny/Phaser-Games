@@ -2,6 +2,7 @@ import "phaser";
 import config from "../Config/config";
 
 var HealthBar = require("../Extra/HealthBar");
+
 var background;
 var platforms;
 var troll;
@@ -11,6 +12,8 @@ var description;
 var trolls;
 var player;
 var randomMovement;
+
+var playerHealthMeter;
 
 var timeSinceLastMovement = 0;
 
@@ -29,7 +32,7 @@ export default class GameScene extends Phaser.Scene {
     //     `../../assets/pictures/background/Layer (${i}).png`
     //   );
     // }
-    this.load.image("bg", "../../assets/pictures/background/Scene.png");
+    this.load.image("bg", "../../assets/pictures/background/Scene.jpg");
     this.load.image(
       "platform",
       "../../assets/pictures/background/Platform.png"
@@ -127,13 +130,14 @@ export default class GameScene extends Phaser.Scene {
     this.physics.add.collider(player, platforms);
 
     // HUD
-    // var barConfig = { x: 200, y: 100 };
+    var barConfig = { x: 200, y: 100 };
+    playerHealthMeter = new HealthBar(this.game, barConfig);
     // this.myHealthBar = new HealthBar(this.game, barConfig);
     // healthbar = this.add.image(180, 540, "health-01");
 
     // Text
     description = this.add.text(
-      600,
+      onfig.width / 2,
       60,
       "Compliment the troll and see what happens!",
       {
@@ -145,34 +149,34 @@ export default class GameScene extends Phaser.Scene {
     cursors = this.input.keyboard.createCursorKeys();
 
     // Display text field
-    // VisibilityToggle("main");
+    VisibilityToggle("main");
 
     // Add event listeners
-    // document
-    //   .getElementById("button-next")
-    //   .addEventListener("click", function() {
-    //     console.log(troll);
-    //     if (document.getElementById("input-4").value === "") {
-    //       textField.classList.add("input__label--error");
-    //       setTimeout(function() {
-    //         textField.classList.remove("input__label--error");
-    //       }, 300);
-    //     } else {
-    //       if (positivityCheck(document.getElementById("input-4").value)) {
-    //         if (healthbar.texture.key == "health-01") {
-    //           healthbar.setTexture("health-02");
-    //         } else if (healthbar.texture.key == "health-02") {
-    //           healthbar.setTexture("health-03");
-    //         } else if (healthbar.texture.key == "health-03") {
-    //           healthbar.setTexture("health-04");
-    //         } else if (healthbar.texture.key == "health-04") {
-    //           healthbar.setTexture("health-05");
-    //         }
-    //         document.getElementById("input-4").value = "";
-    //       } else {
-    //       }
-    //     }
-    //   });
+    document
+      .getElementById("button-next")
+      .addEventListener("click", function() {
+        console.log(troll);
+        if (document.getElementById("input-4").value === "") {
+          textField.classList.add("input__label--error");
+          setTimeout(function() {
+            textField.classList.remove("input__label--error");
+          }, 300);
+        } else {
+          if (positivityCheck(document.getElementById("input-4").value)) {
+            if (healthbar.texture.key == "health-01") {
+              healthbar.setTexture("health-02");
+            } else if (healthbar.texture.key == "health-02") {
+              healthbar.setTexture("health-03");
+            } else if (healthbar.texture.key == "health-03") {
+              healthbar.setTexture("health-04");
+            } else if (healthbar.texture.key == "health-04") {
+              healthbar.setTexture("health-05");
+            }
+            document.getElementById("input-4").value = "";
+          } else {
+          }
+        }
+      });
   }
 
   update() {
